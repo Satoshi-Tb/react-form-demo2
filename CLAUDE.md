@@ -32,12 +32,31 @@ cc-react-form-sample/
 ## 実装要件
 
 ### フォーム項目
-会員情報の登録フォームに以下の項目を含める：
-- **テキスト（単一行）**: 名前、メールアドレス
-- **テキスト（複数行）**: 自己紹介
-- **選択リスト（単一）**: 都道府県（react-select）
-- **選択リスト（複数）**: 興味のある分野（react-select）
-- **ラジオボタン**: 性別
+会員情報の登録フォームに以下の項目を含める（縦スクロール表示対応）：
+
+#### 基本情報
+- **テキスト（単一行）**: 姓、名、フリガナ（姓）、フリガナ（名）
+- **テキスト（単一行）**: メールアドレス、電話番号、郵便番号
+- **テキスト（複数行）**: 住所、自己紹介、志望動機
+
+#### 選択項目
+- **ラジオボタン**: 性別、年代、職業、学歴
+- **選択リスト（単一）**: 都道府県、最寄り駅（react-select）
+- **選択リスト（複数）**: 興味のある分野、スキル、資格（react-select）
+
+#### 詳細情報
+- **チェックボックス**: 趣味（複数選択可）、連絡希望時間帯
+- **テキスト（単一行）**: 緊急連絡先名、緊急連絡先電話番号
+- **テキスト（複数行）**: 特記事項、アピールポイント
+- **選択リスト（単一）**: 希望勤務地、希望職種（react-select）
+
+#### 同意・確認項目
+- **チェックボックス**: プライバシーポリシー同意、メルマガ配信同意
+- **テキスト（複数行）**: その他要望・質問
+
+**スクロール挙動確認**: 
+- フォーム全体を縦スクロール可能にし、再レンダリング時のスクロール位置保持動作を確認
+- 高さ制限エリア内でのscrollY制御も実装予定
 
 ### バリデーション
 - 必須入力チェックのみ実装
@@ -75,12 +94,43 @@ src/
 ```
 
 ### 3. フォーム項目詳細
-- **name** (string): 名前 - 必須
-- **email** (string): メールアドレス - 必須  
-- **gender** ('male' | 'female' | 'other'): 性別 - 必須
-- **prefecture** (string): 都道府県 - 必須
-- **interests** (string[]): 興味のある分野 - 必須（1つ以上）
+#### 基本情報
+- **lastName** (string): 姓 - 必須
+- **firstName** (string): 名 - 必須
+- **lastNameKana** (string): フリガナ（姓） - 必須
+- **firstNameKana** (string): フリガナ（名） - 必須
+- **email** (string): メールアドレス - 必須
+- **phone** (string): 電話番号 - 必須
+- **zipCode** (string): 郵便番号 - 必須
+- **address** (string): 住所 - 必須
 - **bio** (string): 自己紹介 - 任意
+- **motivation** (string): 志望動機 - 必須
+
+#### 選択項目
+- **gender** ('male' | 'female' | 'other'): 性別 - 必須
+- **ageGroup** ('20s' | '30s' | '40s' | '50s' | '60s+'): 年代 - 必須
+- **occupation** ('student' | 'employee' | 'freelance' | 'other'): 職業 - 必須
+- **education** ('high_school' | 'university' | 'graduate' | 'other'): 学歴 - 必須
+- **prefecture** (string): 都道府県 - 必須
+- **nearestStation** (string): 最寄り駅 - 必須
+- **interests** (string[]): 興味のある分野 - 必須（1つ以上）
+- **skills** (string[]): スキル - 任意
+- **certifications** (string[]): 資格 - 任意
+
+#### 詳細情報
+- **hobbies** (string[]): 趣味 - 任意
+- **contactTimeSlots** (string[]): 連絡希望時間帯 - 任意
+- **emergencyContactName** (string): 緊急連絡先名 - 必須
+- **emergencyContactPhone** (string): 緊急連絡先電話番号 - 必須
+- **specialNotes** (string): 特記事項 - 任意
+- **appealPoints** (string): アピールポイント - 任意
+- **preferredWorkLocation** (string): 希望勤務地 - 任意
+- **preferredJobType** (string): 希望職種 - 任意
+
+#### 同意・確認項目
+- **privacyPolicyAgreed** (boolean): プライバシーポリシー同意 - 必須
+- **newsletterSubscribed** (boolean): メルマガ配信同意 - 任意
+- **additionalRequests** (string): その他要望・質問 - 任意
 
 ### 4. API仕様
 **POST /api/register**
@@ -131,3 +181,5 @@ npm run lint
 6. Next.js APIルートの活用
 7. MUIコンポーネントの使用方法
 8. react-selectの使用方法
+9. **縦スクロール対応と再レンダリング時のスクロール位置挙動**
+10. **大量フォーム項目の効率的な管理とUX設計**
