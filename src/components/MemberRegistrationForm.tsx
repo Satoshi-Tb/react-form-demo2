@@ -18,19 +18,17 @@ import {
   CircularProgress,
 } from "@mui/material";
 import Select from "react-select";
+import SingleSelectField from "./SingleSelectField";
 import {
   MemberFormData,
   ValidationErrors,
-  PREFECTURES,
-  STATIONS,
   INTERESTS,
   SKILLS,
   CERTIFICATIONS,
   HOBBIES,
   CONTACT_TIME_SLOTS,
-  WORK_LOCATIONS,
-  JOB_TYPES,
   SelectOption,
+  SINGLE_SELECT_CONFIGS,
 } from "../types/member";
 import { validateMemberForm, hasValidationErrors } from "../utils/validation";
 
@@ -561,43 +559,27 @@ const MemberRegistrationForm: React.FC = () => {
               )}
             </FormControl>
 
-            <Box sx={{ mb: 3 }}>
-              <Typography variant="body1" gutterBottom>
-                都道府県 *
-              </Typography>
-              <Select
-                name="prefecture"
-                options={PREFECTURES}
-                value={getSelectValue("prefecture", PREFECTURES)}
-                onChange={handleSelectChange("prefecture")}
-                placeholder="都道府県を選択してください"
-                isClearable
+            {SINGLE_SELECT_CONFIGS.filter(
+              (config) =>
+                config.name === "prefecture" || config.name === "nearestStation"
+            ).map((config) => (
+              <SingleSelectField
+                key={config.name}
+                name={config.name}
+                label={config.label}
+                options={config.options}
+                value={
+                  getSelectValue(
+                    config.name,
+                    config.options
+                  ) as SelectOption | null
+                }
+                onChange={handleSelectChange(config.name)}
+                error={errors[config.name]}
+                required={config.required}
+                placeholder={config.placeholder}
               />
-              {errors.prefecture && (
-                <Typography variant="caption" color="error">
-                  {errors.prefecture}
-                </Typography>
-              )}
-            </Box>
-
-            <Box sx={{ mb: 3 }}>
-              <Typography variant="body1" gutterBottom>
-                最寄り駅 *
-              </Typography>
-              <Select
-                name="nearestStation"
-                options={STATIONS}
-                value={getSelectValue("nearestStation", STATIONS)}
-                onChange={handleSelectChange("nearestStation")}
-                placeholder="最寄り駅を選択してください"
-                isClearable
-              />
-              {errors.nearestStation && (
-                <Typography variant="caption" color="error">
-                  {errors.nearestStation}
-                </Typography>
-              )}
-            </Box>
+            ))}
 
             <Box sx={{ mb: 3 }}>
               <Typography variant="body1" gutterBottom>
@@ -752,33 +734,28 @@ const MemberRegistrationForm: React.FC = () => {
               sx={{ mb: 3 }}
             />
 
-            <Box sx={{ mb: 3 }}>
-              <Typography variant="body1" gutterBottom>
-                希望勤務地
-              </Typography>
-              <Select
-                name="preferredWorkLocation"
-                options={WORK_LOCATIONS}
-                value={getSelectValue("preferredWorkLocation", WORK_LOCATIONS)}
-                onChange={handleSelectChange("preferredWorkLocation")}
-                placeholder="希望勤務地を選択してください"
-                isClearable
+            {SINGLE_SELECT_CONFIGS.filter(
+              (config) =>
+                config.name === "preferredWorkLocation" ||
+                config.name === "preferredJobType"
+            ).map((config) => (
+              <SingleSelectField
+                key={config.name}
+                name={config.name}
+                label={config.label}
+                options={config.options}
+                value={
+                  getSelectValue(
+                    config.name,
+                    config.options
+                  ) as SelectOption | null
+                }
+                onChange={handleSelectChange(config.name)}
+                error={errors[config.name]}
+                required={config.required}
+                placeholder={config.placeholder}
               />
-            </Box>
-
-            <Box sx={{ mb: 3 }}>
-              <Typography variant="body1" gutterBottom>
-                希望職種
-              </Typography>
-              <Select
-                name="preferredJobType"
-                options={JOB_TYPES}
-                value={getSelectValue("preferredJobType", JOB_TYPES)}
-                onChange={handleSelectChange("preferredJobType")}
-                placeholder="希望職種を選択してください"
-                isClearable
-              />
-            </Box>
+            ))}
 
             {/* 同意・確認項目セクション */}
             <Typography

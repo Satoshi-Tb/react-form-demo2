@@ -199,3 +199,42 @@ export const JOB_TYPES: SelectOption[] = [
   { value: 'pm', label: 'プロジェクトマネージャー' },
   { value: 'qa', label: 'QAエンジニア' },
 ];
+
+export interface SingleSelectFieldConfig {
+  name: keyof MemberFormData;
+  label: string;
+  options: SelectOption[];
+  required?: boolean;
+  placeholder?: string;
+}
+
+export const SINGLE_SELECT_CONFIGS: SingleSelectFieldConfig[] = [
+  {
+    name: 'prefecture',
+    label: '都道府県',
+    options: PREFECTURES,
+    required: true,
+    placeholder: '都道府県を選択してください'
+  },
+  {
+    name: 'nearestStation',
+    label: '最寄り駅',
+    options: STATIONS,
+    required: true,
+    placeholder: '最寄り駅を選択してください'
+  },
+  {
+    name: 'preferredWorkLocation',
+    label: '希望勤務地',
+    options: WORK_LOCATIONS,
+    required: false,
+    placeholder: '希望勤務地を選択してください'
+  },
+  {
+    name: 'preferredJobType',
+    label: '希望職種',
+    options: JOB_TYPES,
+    required: false,
+    placeholder: '希望職種を選択してください'
+  }
+];
