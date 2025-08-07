@@ -70,4 +70,6 @@ const SingleSelectField = forwardRef<HTMLDivElement, SingleSelectFieldProps>((
   );
 });
 
+SingleSelectField.displayName = 'SingleSelectField';
+
 export default SingleSelectField;

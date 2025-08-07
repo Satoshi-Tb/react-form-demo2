@@ -343,7 +343,7 @@ const MemberRegistrationForm: React.FC = () => {
             <Divider sx={{ mb: 3 }} />
 
             <FormControl 
-              ref={(element) => setFieldRef('gender', element)}
+              ref={(element) => setFieldRef('gender', element as HTMLElement | null)}
               error={!!errors.gender} 
               sx={{ mb: 3 }}
             >
@@ -378,7 +378,7 @@ const MemberRegistrationForm: React.FC = () => {
             </FormControl>
 
             <FormControl 
-              ref={(element) => setFieldRef('ageGroup', element)}
+              ref={(element) => setFieldRef('ageGroup', element as HTMLElement | null)}
               error={!!errors.ageGroup} 
               sx={{ mb: 3 }}
             >
@@ -423,7 +423,7 @@ const MemberRegistrationForm: React.FC = () => {
             </FormControl>
 
             <FormControl 
-              ref={(element) => setFieldRef('occupation', element)}
+              ref={(element) => setFieldRef('occupation', element as HTMLElement | null)}
               error={!!errors.occupation} 
               sx={{ mb: 3 }}
             >
@@ -463,7 +463,7 @@ const MemberRegistrationForm: React.FC = () => {
             </FormControl>
 
             <FormControl 
-              ref={(element) => setFieldRef('education', element)}
+              ref={(element) => setFieldRef('education', element as HTMLElement | null)}
               error={!!errors.education} 
               sx={{ mb: 3 }}
             >
@@ -525,7 +525,7 @@ const MemberRegistrationForm: React.FC = () => {
               />
             ))}
 
-            <Box ref={(element) => setFieldRef('interests', element)} sx={{ mb: 3 }}>
+            <Box ref={(element) => setFieldRef('interests', element as HTMLElement | null)} sx={{ mb: 3 }}>
               <Typography variant="body1" gutterBottom>
                 興味のある分野 * (複数選択可)
               </Typography>
@@ -544,7 +544,7 @@ const MemberRegistrationForm: React.FC = () => {
               )}
             </Box>
 
-            <Box ref={(element) => setFieldRef('skills', element)} sx={{ mb: 3 }}>
+            <Box ref={(element) => setFieldRef('skills', element as HTMLElement | null)} sx={{ mb: 3 }}>
               <Typography variant="body1" gutterBottom>
                 スキル (複数選択可)
               </Typography>
@@ -558,7 +558,7 @@ const MemberRegistrationForm: React.FC = () => {
               />
             </Box>
 
-            <Box ref={(element) => setFieldRef('certifications', element)} sx={{ mb: 3 }}>
+            <Box ref={(element) => setFieldRef('certifications', element as HTMLElement | null)} sx={{ mb: 3 }}>
               <Typography variant="body1" gutterBottom>
                 資格 (複数選択可)
               </Typography>
@@ -582,7 +582,7 @@ const MemberRegistrationForm: React.FC = () => {
             </Typography>
             <Divider sx={{ mb: 3 }} />
 
-            <FormControl ref={(element) => setFieldRef('hobbies', element)} sx={{ mb: 3 }}>
+            <FormControl ref={(element) => setFieldRef('hobbies', element as HTMLElement | null)} sx={{ mb: 3 }}>
               <FormLabel component="legend">趣味 (複数選択可)</FormLabel>
               <FormGroup row>
                 {HOBBIES.map((hobby) => (
@@ -603,7 +603,7 @@ const MemberRegistrationForm: React.FC = () => {
               </FormGroup>
             </FormControl>
 
-            <FormControl ref={(element) => setFieldRef('contactTimeSlots', element)} sx={{ mb: 3 }}>
+            <FormControl ref={(element) => setFieldRef('contactTimeSlots', element as HTMLElement | null)} sx={{ mb: 3 }}>
               <FormLabel component="legend">
                 連絡希望時間帯 (複数選択可)
               </FormLabel>
@@ -714,7 +714,7 @@ const MemberRegistrationForm: React.FC = () => {
             <Divider sx={{ mb: 3 }} />
 
             <FormControl 
-              ref={(element) => setFieldRef('privacyPolicyAgreed', element)}
+              ref={(element) => setFieldRef('privacyPolicyAgreed', element as HTMLElement | null)}
               error={!!errors.privacyPolicyAgreed} 
               sx={{ mb: 3 }}
             >
@@ -735,7 +735,7 @@ const MemberRegistrationForm: React.FC = () => {
               )}
             </FormControl>
 
-            <FormControl ref={(element) => setFieldRef('newsletterSubscribed', element)} sx={{ mb: 3 }}>
+            <FormControl ref={(element) => setFieldRef('newsletterSubscribed', element as HTMLElement | null)} sx={{ mb: 3 }}>
               <FormControlLabel
                 control={
                   <Checkbox

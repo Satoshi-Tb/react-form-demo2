@@ -64,4 +64,6 @@ const CommonTextField = forwardRef<HTMLDivElement, CommonTextFieldProps>((
   );
 });
 
+CommonTextField.displayName = 'CommonTextField';
+
 export default CommonTextField;
