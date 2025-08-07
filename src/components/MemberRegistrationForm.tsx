@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   Box,
   Container,
@@ -73,6 +73,14 @@ const MemberRegistrationForm: React.FC = () => {
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  
+  // フォームフィールドのrefs
+  const fieldRefs = useRef<Record<string, HTMLElement | null>>({});
+  
+  // ref設定用のヘルパー関数
+  const setFieldRef = (name: string, element: HTMLElement | null) => {
+    fieldRefs.current[name] = element;
+  };
 
   const handleInputChange =
     (field: keyof MemberFormData) =>
@@ -158,11 +166,16 @@ const MemberRegistrationForm: React.FC = () => {
 
     if (hasValidationErrors(validationErrors)) {
       setErrors(validationErrors);
-      // エラーがある場合、最初のエラーフィールドにスクロール
+      // エラーがある場合、最初のエラーフィールドにスクロール&フォーカス
       const firstErrorField = Object.keys(validationErrors)[0];
-      const element = document.querySelector(`[name="${firstErrorField}"]`);
+      const element = fieldRefs.current[firstErrorField];
       if (element) {
         element.scrollIntoView({ behavior: "smooth", block: "center" });
+        // フォーカス可能な要素にフォーカス
+        const focusableElement = element.querySelector('input, textarea, select') as HTMLElement;
+        if (focusableElement) {
+          setTimeout(() => focusableElement.focus(), 100);
+        }
       }
       return;
     }
@@ -291,6 +304,7 @@ const MemberRegistrationForm: React.FC = () => {
                         multiline={field.multiline}
                         rows={field.rows}
                         gridArea={field.gridArea}
+                        setFieldRef={setFieldRef}
                       />
                     ))}
                   </Box>
@@ -310,6 +324,7 @@ const MemberRegistrationForm: React.FC = () => {
                         type={field.type}
                         multiline={field.multiline}
                         rows={field.rows}
+                        setFieldRef={setFieldRef}
                       />
                     ))}
                   </Box>
@@ -327,7 +342,11 @@ const MemberRegistrationForm: React.FC = () => {
             </Typography>
             <Divider sx={{ mb: 3 }} />
 
-            <FormControl error={!!errors.gender} sx={{ mb: 3 }}>
+            <FormControl 
+              ref={(element) => setFieldRef('gender', element)}
+              error={!!errors.gender} 
+              sx={{ mb: 3 }}
+            >
               <FormLabel component="legend">性別 *</FormLabel>
               <RadioGroup
                 name="gender"
@@ -358,7 +377,11 @@ const MemberRegistrationForm: React.FC = () => {
               )}
             </FormControl>
 
-            <FormControl error={!!errors.ageGroup} sx={{ mb: 3 }}>
+            <FormControl 
+              ref={(element) => setFieldRef('ageGroup', element)}
+              error={!!errors.ageGroup} 
+              sx={{ mb: 3 }}
+            >
               <FormLabel component="legend">年代 *</FormLabel>
               <RadioGroup
                 name="ageGroup"
@@ -399,7 +422,11 @@ const MemberRegistrationForm: React.FC = () => {
               )}
             </FormControl>
 
-            <FormControl error={!!errors.occupation} sx={{ mb: 3 }}>
+            <FormControl 
+              ref={(element) => setFieldRef('occupation', element)}
+              error={!!errors.occupation} 
+              sx={{ mb: 3 }}
+            >
               <FormLabel component="legend">職業 *</FormLabel>
               <RadioGroup
                 name="occupation"
@@ -435,7 +462,11 @@ const MemberRegistrationForm: React.FC = () => {
               )}
             </FormControl>
 
-            <FormControl error={!!errors.education} sx={{ mb: 3 }}>
+            <FormControl 
+              ref={(element) => setFieldRef('education', element)}
+              error={!!errors.education} 
+              sx={{ mb: 3 }}
+            >
               <FormLabel component="legend">学歴 *</FormLabel>
               <RadioGroup
                 name="education"
@@ -490,10 +521,11 @@ const MemberRegistrationForm: React.FC = () => {
                 error={errors[config.name]}
                 required={config.required}
                 placeholder={config.placeholder}
+                setFieldRef={setFieldRef}
               />
             ))}
 
-            <Box sx={{ mb: 3 }}>
+            <Box ref={(element) => setFieldRef('interests', element)} sx={{ mb: 3 }}>
               <Typography variant="body1" gutterBottom>
                 興味のある分野 * (複数選択可)
               </Typography>
@@ -512,7 +544,7 @@ const MemberRegistrationForm: React.FC = () => {
               )}
             </Box>
 
-            <Box sx={{ mb: 3 }}>
+            <Box ref={(element) => setFieldRef('skills', element)} sx={{ mb: 3 }}>
               <Typography variant="body1" gutterBottom>
                 スキル (複数選択可)
               </Typography>
@@ -526,7 +558,7 @@ const MemberRegistrationForm: React.FC = () => {
               />
             </Box>
 
-            <Box sx={{ mb: 3 }}>
+            <Box ref={(element) => setFieldRef('certifications', element)} sx={{ mb: 3 }}>
               <Typography variant="body1" gutterBottom>
                 資格 (複数選択可)
               </Typography>
@@ -550,7 +582,7 @@ const MemberRegistrationForm: React.FC = () => {
             </Typography>
             <Divider sx={{ mb: 3 }} />
 
-            <FormControl sx={{ mb: 3 }}>
+            <FormControl ref={(element) => setFieldRef('hobbies', element)} sx={{ mb: 3 }}>
               <FormLabel component="legend">趣味 (複数選択可)</FormLabel>
               <FormGroup row>
                 {HOBBIES.map((hobby) => (
@@ -571,7 +603,7 @@ const MemberRegistrationForm: React.FC = () => {
               </FormGroup>
             </FormControl>
 
-            <FormControl sx={{ mb: 3 }}>
+            <FormControl ref={(element) => setFieldRef('contactTimeSlots', element)} sx={{ mb: 3 }}>
               <FormLabel component="legend">
                 連絡希望時間帯 (複数選択可)
               </FormLabel>
@@ -619,6 +651,7 @@ const MemberRegistrationForm: React.FC = () => {
                         multiline={field.multiline}
                         rows={field.rows}
                         gridArea={field.gridArea}
+                        setFieldRef={setFieldRef}
                       />
                     ))}
                   </Box>
@@ -638,6 +671,7 @@ const MemberRegistrationForm: React.FC = () => {
                         type={field.type}
                         multiline={field.multiline}
                         rows={field.rows}
+                        setFieldRef={setFieldRef}
                       />
                     ))}
                   </Box>
@@ -665,6 +699,7 @@ const MemberRegistrationForm: React.FC = () => {
                 error={errors[config.name]}
                 required={config.required}
                 placeholder={config.placeholder}
+                setFieldRef={setFieldRef}
               />
             ))}
 
@@ -678,7 +713,11 @@ const MemberRegistrationForm: React.FC = () => {
             </Typography>
             <Divider sx={{ mb: 3 }} />
 
-            <FormControl error={!!errors.privacyPolicyAgreed} sx={{ mb: 3 }}>
+            <FormControl 
+              ref={(element) => setFieldRef('privacyPolicyAgreed', element)}
+              error={!!errors.privacyPolicyAgreed} 
+              sx={{ mb: 3 }}
+            >
               <FormControlLabel
                 control={
                   <Checkbox
@@ -696,7 +735,7 @@ const MemberRegistrationForm: React.FC = () => {
               )}
             </FormControl>
 
-            <FormControl sx={{ mb: 3 }}>
+            <FormControl ref={(element) => setFieldRef('newsletterSubscribed', element)} sx={{ mb: 3 }}>
               <FormControlLabel
                 control={
                   <Checkbox

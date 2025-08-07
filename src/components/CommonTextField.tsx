@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import { TextField } from "@mui/material";
 import { MemberFormData } from "../types/member";
 
@@ -14,23 +14,40 @@ interface CommonTextFieldProps {
   rows?: number;
   fullWidth?: boolean;
   gridArea?: string;
+  setFieldRef?: (name: string, element: HTMLElement | null) => void;
 }
 
-const CommonTextField: React.FC<CommonTextFieldProps> = ({
-  name,
-  label,
-  value,
-  onChange,
-  error,
-  required = false,
-  type = "text",
-  multiline = false,
-  rows,
-  fullWidth = true,
-  gridArea,
-}) => {
+const CommonTextField = forwardRef<HTMLDivElement, CommonTextFieldProps>((
+  {
+    name,
+    label,
+    value,
+    onChange,
+    error,
+    required = false,
+    type = "text",
+    multiline = false,
+    rows,
+    fullWidth = true,
+    gridArea,
+    setFieldRef,
+  },
+  ref
+) => {
+  const handleRef = (element: HTMLDivElement | null) => {
+    if (setFieldRef) {
+      setFieldRef(name, element);
+    }
+    if (typeof ref === 'function') {
+      ref(element);
+    } else if (ref) {
+      ref.current = element;
+    }
+  };
+
   return (
     <TextField
+      ref={handleRef}
       name={name}
       label={label}
       type={type}
@@ -45,6 +62,6 @@ const CommonTextField: React.FC<CommonTextFieldProps> = ({
       sx={{ gridArea }}
     />
   );
-};
+});
 
 export default CommonTextField;

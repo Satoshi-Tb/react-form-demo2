@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, forwardRef } from "react";
 import { Box, Typography } from "@mui/material";
 import Select from "react-select";
 import { SelectOption } from "../types/member";
@@ -12,18 +12,23 @@ interface SingleSelectFieldProps {
   error?: string;
   required?: boolean;
   placeholder?: string;
+  setFieldRef?: (name: string, element: HTMLElement | null) => void;
 }
 
-const SingleSelectField: React.FC<SingleSelectFieldProps> = ({
-  name,
-  label,
-  options,
-  value,
-  onChange,
-  error,
-  required = false,
-  placeholder,
-}) => {
+const SingleSelectField = forwardRef<HTMLDivElement, SingleSelectFieldProps>((
+  {
+    name,
+    label,
+    options,
+    value,
+    onChange,
+    error,
+    required = false,
+    placeholder,
+    setFieldRef,
+  },
+  ref
+) => {
   useEffect(() => {
     console.log(`SingleSelectField マウント: ${name}`);
     return () => {
@@ -32,8 +37,19 @@ const SingleSelectField: React.FC<SingleSelectFieldProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handleRef = (element: HTMLDivElement | null) => {
+    if (setFieldRef) {
+      setFieldRef(name, element);
+    }
+    if (typeof ref === 'function') {
+      ref(element);
+    } else if (ref) {
+      ref.current = element;
+    }
+  };
+
   return (
-    <Box sx={{ mb: 3 }}>
+    <Box ref={handleRef} sx={{ mb: 3 }}>
       <Typography variant="body1" gutterBottom>
         {label} {required && "*"}
       </Typography>
@@ -52,6 +68,6 @@ const SingleSelectField: React.FC<SingleSelectFieldProps> = ({
       )}
     </Box>
   );
-};
+});
 
 export default SingleSelectField;
