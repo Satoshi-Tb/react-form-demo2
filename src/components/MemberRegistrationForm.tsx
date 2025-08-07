@@ -3,7 +3,6 @@ import {
   Box,
   Container,
   Typography,
-  TextField,
   Button,
   FormControl,
   FormLabel,
@@ -19,6 +18,7 @@ import {
 } from "@mui/material";
 import Select from "react-select";
 import SingleSelectField from "./SingleSelectField";
+import CommonTextField from "./CommonTextField";
 import {
   MemberFormData,
   ValidationErrors,
@@ -29,6 +29,9 @@ import {
   CONTACT_TIME_SLOTS,
   SelectOption,
   SINGLE_SELECT_CONFIGS,
+  TEXT_FIELD_GROUPS,
+  DETAIL_TEXT_FIELD_GROUPS,
+  FINAL_TEXT_FIELD_GROUPS,
 } from "../types/member";
 import { validateMemberForm, hasValidationErrors } from "../utils/validation";
 
@@ -263,147 +266,56 @@ const MemberRegistrationForm: React.FC = () => {
             </Typography>
             <Divider sx={{ mb: 3 }} />
 
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
-                gap: 2,
-                mb: 3,
-              }}
-            >
-              <TextField
-                name="lastName"
-                label="姓"
-                value={formData.lastName}
-                onChange={handleInputChange("lastName")}
-                error={!!errors.lastName}
-                helperText={errors.lastName}
-                required
-                fullWidth
-              />
-              <TextField
-                name="firstName"
-                label="名"
-                value={formData.firstName}
-                onChange={handleInputChange("firstName")}
-                error={!!errors.firstName}
-                helperText={errors.firstName}
-                required
-                fullWidth
-              />
-            </Box>
-
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
-                gap: 2,
-                mb: 3,
-              }}
-            >
-              <TextField
-                name="lastNameKana"
-                label="フリガナ（姓）"
-                value={formData.lastNameKana}
-                onChange={handleInputChange("lastNameKana")}
-                error={!!errors.lastNameKana}
-                helperText={errors.lastNameKana}
-                required
-                fullWidth
-              />
-              <TextField
-                name="firstNameKana"
-                label="フリガナ（名）"
-                value={formData.firstNameKana}
-                onChange={handleInputChange("firstNameKana")}
-                error={!!errors.firstNameKana}
-                helperText={errors.firstNameKana}
-                required
-                fullWidth
-              />
-            </Box>
-
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
-                gap: 2,
-                mb: 3,
-              }}
-            >
-              <TextField
-                name="email"
-                label="メールアドレス"
-                type="email"
-                value={formData.email}
-                onChange={handleInputChange("email")}
-                error={!!errors.email}
-                helperText={errors.email}
-                required
-                fullWidth
-              />
-              <TextField
-                name="phone"
-                label="電話番号"
-                value={formData.phone}
-                onChange={handleInputChange("phone")}
-                error={!!errors.phone}
-                helperText={errors.phone}
-                required
-                fullWidth
-              />
-            </Box>
-
-            <TextField
-              name="zipCode"
-              label="郵便番号"
-              value={formData.zipCode}
-              onChange={handleInputChange("zipCode")}
-              error={!!errors.zipCode}
-              helperText={errors.zipCode}
-              required
-              fullWidth
-              sx={{ mb: 3 }}
-            />
-
-            <TextField
-              name="address"
-              label="住所"
-              multiline
-              rows={2}
-              value={formData.address}
-              onChange={handleInputChange("address")}
-              error={!!errors.address}
-              helperText={errors.address}
-              required
-              fullWidth
-              sx={{ mb: 3 }}
-            />
-
-            <TextField
-              name="bio"
-              label="自己紹介"
-              multiline
-              rows={3}
-              value={formData.bio}
-              onChange={handleInputChange("bio")}
-              fullWidth
-              sx={{ mb: 3 }}
-            />
-
-            <TextField
-              name="motivation"
-              label="志望動機"
-              multiline
-              rows={3}
-              value={formData.motivation}
-              onChange={handleInputChange("motivation")}
-              error={!!errors.motivation}
-              helperText={errors.motivation}
-              required
-              fullWidth
-              sx={{ mb: 3 }}
-            />
+            {TEXT_FIELD_GROUPS.map((group, groupIndex) => {
+              if (group.type === 'grid') {
+                return (
+                  <Box
+                    key={groupIndex}
+                    sx={{
+                      display: "grid",
+                      gridTemplateColumns: { xs: "1fr", sm: group.gridColumns },
+                      gap: group.gap,
+                      mb: group.marginBottom,
+                    }}
+                  >
+                    {group.fields.map((field) => (
+                      <CommonTextField
+                        key={field.name}
+                        name={field.name}
+                        label={field.label}
+                        value={formData[field.name] as string}
+                        onChange={handleInputChange(field.name)}
+                        error={errors[field.name]}
+                        required={field.required}
+                        type={field.type}
+                        multiline={field.multiline}
+                        rows={field.rows}
+                        gridArea={field.gridArea}
+                      />
+                    ))}
+                  </Box>
+                );
+              } else {
+                return (
+                  <Box key={groupIndex} sx={{ mb: group.marginBottom }}>
+                    {group.fields.map((field) => (
+                      <CommonTextField
+                        key={field.name}
+                        name={field.name}
+                        label={field.label}
+                        value={formData[field.name] as string}
+                        onChange={handleInputChange(field.name)}
+                        error={errors[field.name]}
+                        required={field.required}
+                        type={field.type}
+                        multiline={field.multiline}
+                        rows={field.rows}
+                      />
+                    ))}
+                  </Box>
+                );
+              }
+            })}
 
             {/* 選択項目セクション */}
             <Typography
@@ -682,57 +594,56 @@ const MemberRegistrationForm: React.FC = () => {
               </FormGroup>
             </FormControl>
 
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
-                gap: 2,
-                mb: 3,
-              }}
-            >
-              <TextField
-                name="emergencyContactName"
-                label="緊急連絡先名"
-                value={formData.emergencyContactName}
-                onChange={handleInputChange("emergencyContactName")}
-                error={!!errors.emergencyContactName}
-                helperText={errors.emergencyContactName}
-                required
-                fullWidth
-              />
-              <TextField
-                name="emergencyContactPhone"
-                label="緊急連絡先電話番号"
-                value={formData.emergencyContactPhone}
-                onChange={handleInputChange("emergencyContactPhone")}
-                error={!!errors.emergencyContactPhone}
-                helperText={errors.emergencyContactPhone}
-                required
-                fullWidth
-              />
-            </Box>
-
-            <TextField
-              name="specialNotes"
-              label="特記事項"
-              multiline
-              rows={3}
-              value={formData.specialNotes}
-              onChange={handleInputChange("specialNotes")}
-              fullWidth
-              sx={{ mb: 3 }}
-            />
-
-            <TextField
-              name="appealPoints"
-              label="アピールポイント"
-              multiline
-              rows={3}
-              value={formData.appealPoints}
-              onChange={handleInputChange("appealPoints")}
-              fullWidth
-              sx={{ mb: 3 }}
-            />
+            {DETAIL_TEXT_FIELD_GROUPS.map((group, groupIndex) => {
+              if (group.type === 'grid') {
+                return (
+                  <Box
+                    key={groupIndex}
+                    sx={{
+                      display: "grid",
+                      gridTemplateColumns: { xs: "1fr", sm: group.gridColumns },
+                      gap: group.gap,
+                      mb: group.marginBottom,
+                    }}
+                  >
+                    {group.fields.map((field) => (
+                      <CommonTextField
+                        key={field.name}
+                        name={field.name}
+                        label={field.label}
+                        value={formData[field.name] as string}
+                        onChange={handleInputChange(field.name)}
+                        error={errors[field.name]}
+                        required={field.required}
+                        type={field.type}
+                        multiline={field.multiline}
+                        rows={field.rows}
+                        gridArea={field.gridArea}
+                      />
+                    ))}
+                  </Box>
+                );
+              } else {
+                return (
+                  <Box key={groupIndex} sx={{ mb: group.marginBottom }}>
+                    {group.fields.map((field) => (
+                      <CommonTextField
+                        key={field.name}
+                        name={field.name}
+                        label={field.label}
+                        value={formData[field.name] as string}
+                        onChange={handleInputChange(field.name)}
+                        error={errors[field.name]}
+                        required={field.required}
+                        type={field.type}
+                        multiline={field.multiline}
+                        rows={field.rows}
+                      />
+                    ))}
+                  </Box>
+                );
+              }
+            })}
 
             {SINGLE_SELECT_CONFIGS.filter(
               (config) =>
@@ -798,16 +709,24 @@ const MemberRegistrationForm: React.FC = () => {
               />
             </FormControl>
 
-            <TextField
-              name="additionalRequests"
-              label="その他要望・質問"
-              multiline
-              rows={3}
-              value={formData.additionalRequests}
-              onChange={handleInputChange("additionalRequests")}
-              fullWidth
-              sx={{ mb: 4 }}
-            />
+            {FINAL_TEXT_FIELD_GROUPS.map((group, groupIndex) => (
+              <Box key={groupIndex} sx={{ mb: group.marginBottom }}>
+                {group.fields.map((field) => (
+                  <CommonTextField
+                    key={field.name}
+                    name={field.name}
+                    label={field.label}
+                    value={formData[field.name] as string}
+                    onChange={handleInputChange(field.name)}
+                    error={errors[field.name]}
+                    required={field.required}
+                    type={field.type}
+                    multiline={field.multiline}
+                    rows={field.rows}
+                  />
+                ))}
+              </Box>
+            ))}
           </Box>
 
           <Box sx={{ textAlign: "center" }}>

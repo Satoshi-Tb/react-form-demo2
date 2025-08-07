@@ -238,3 +238,119 @@ export const SINGLE_SELECT_CONFIGS: SingleSelectFieldConfig[] = [
     placeholder: '希望職種を選択してください'
   }
 ];
+
+export interface TextFieldConfig {
+  name: keyof MemberFormData;
+  label: string;
+  required?: boolean;
+  type?: string;
+  multiline?: boolean;
+  rows?: number;
+  gridArea?: string;
+}
+
+export interface TextFieldGroup {
+  type: 'grid' | 'single';
+  gridColumns?: string;
+  gap?: number;
+  marginBottom?: number;
+  fields: TextFieldConfig[];
+}
+
+export const TEXT_FIELD_GROUPS: TextFieldGroup[] = [
+  {
+    type: 'grid',
+    gridColumns: '1fr 1fr',
+    gap: 2,
+    marginBottom: 3,
+    fields: [
+      { name: 'lastName', label: '姓', required: true, gridArea: '1 / 1' },
+      { name: 'firstName', label: '名', required: true, gridArea: '1 / 2' }
+    ]
+  },
+  {
+    type: 'grid',
+    gridColumns: '1fr 1fr',
+    gap: 2,
+    marginBottom: 3,
+    fields: [
+      { name: 'lastNameKana', label: 'フリガナ（姓）', required: true, gridArea: '1 / 1' },
+      { name: 'firstNameKana', label: 'フリガナ（名）', required: true, gridArea: '1 / 2' }
+    ]
+  },
+  {
+    type: 'grid',
+    gridColumns: '1fr 1fr',
+    gap: 2,
+    marginBottom: 3,
+    fields: [
+      { name: 'email', label: 'メールアドレス', required: true, type: 'email', gridArea: '1 / 1' },
+      { name: 'phone', label: '電話番号', required: true, gridArea: '1 / 2' }
+    ]
+  },
+  {
+    type: 'single',
+    marginBottom: 3,
+    fields: [
+      { name: 'zipCode', label: '郵便番号', required: true }
+    ]
+  },
+  {
+    type: 'single',
+    marginBottom: 3,
+    fields: [
+      { name: 'address', label: '住所', required: true, multiline: true, rows: 2 }
+    ]
+  },
+  {
+    type: 'single',
+    marginBottom: 3,
+    fields: [
+      { name: 'bio', label: '自己紹介', multiline: true, rows: 3 }
+    ]
+  },
+  {
+    type: 'single',
+    marginBottom: 3,
+    fields: [
+      { name: 'motivation', label: '志望動機', required: true, multiline: true, rows: 3 }
+    ]
+  }
+];
+
+export const DETAIL_TEXT_FIELD_GROUPS: TextFieldGroup[] = [
+  {
+    type: 'grid',
+    gridColumns: '1fr 1fr',
+    gap: 2,
+    marginBottom: 3,
+    fields: [
+      { name: 'emergencyContactName', label: '緊急連絡先名', required: true, gridArea: '1 / 1' },
+      { name: 'emergencyContactPhone', label: '緊急連絡先電話番号', required: true, gridArea: '1 / 2' }
+    ]
+  },
+  {
+    type: 'single',
+    marginBottom: 3,
+    fields: [
+      { name: 'specialNotes', label: '特記事項', multiline: true, rows: 3 }
+    ]
+  },
+  {
+    type: 'single',
+    marginBottom: 3,
+    fields: [
+      { name: 'appealPoints', label: 'アピールポイント', multiline: true, rows: 3 }
+    ]
+  }
+];
+
+export const FINAL_TEXT_FIELD_GROUPS: TextFieldGroup[] = [
+  {
+    type: 'single',
+    marginBottom: 4,
+    fields: [
+      { name: 'additionalRequests', label: 'その他要望・質問', multiline: true, rows: 3 }
+    ]
+  }
+];
